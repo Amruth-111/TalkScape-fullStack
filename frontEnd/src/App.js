@@ -6,10 +6,12 @@ import Chats from './components/Chats';
 
 function App() {
   return (
+    <div className="App">
     <Routes>
         <Route path='/' element={<Home/>} exact></Route>
         <Route path="/chats" element={<Chats/>}exact></Route>
     </Routes>
+    </div>
     
   );
 }

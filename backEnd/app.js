@@ -12,7 +12,9 @@ app.use(cors())
 
 
 const chats=require("./data/data")
+const dbConnect=require('./config/db')
 
+dbConnect()
 
 app.get('/',(req,res)=>{
     res.send('started my api')
@@ -30,8 +32,8 @@ app.get('/api/chats/:id',(req,res)=>{
 
     res.send(result)
 })
+console.log(process.env.MONGO_STRING)
+console.log(port)
 
 
-app.listen(`${port}`,()=>{
-    console.log(`server Started at port ${port}`)
-})
+app.listen(port)
