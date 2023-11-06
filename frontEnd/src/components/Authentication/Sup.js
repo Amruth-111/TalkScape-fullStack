@@ -3,9 +3,10 @@ import { Button } from "@chakra-ui/button";
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input, InputGroup, InputRightElement } from "@chakra-ui/input";
 import { VStack } from "@chakra-ui/layout";
+import { useToast } from '@chakra-ui/react'
 import { useState } from "react";
-
-const Signup = () => {
+import axios from 'axios';
+const Signup = (props) => {
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
   const [name, setName] = useState();
@@ -14,8 +15,55 @@ const Signup = () => {
   const [password, setPassword] = useState();
   const [pic, setPic] = useState();
   const [picLoading, setPicLoading] = useState(false);
+  const toast=useToast()
+  
   const submitHandler = async () => {}
-  const postDetails=(pics)=>{}
+  const postDetails=async(pics)=>{
+      setPicLoading(true)
+    if(pics===undefined){
+      toast({
+        title:"please select the image",
+        status:"warning",
+        duration:5000,
+        isClosable:true,
+        position:"bottom"
+      })
+      return;
+    }
+
+    if(pics.type==="image/jpeg" ||pics.type==="image/png"){
+      const data=new FormData()
+      data.append("file",pics)
+      data.append("upload_preset",props.uploadPreset)
+      data.append("cloud_name",props.cloudName)
+      axios.post(`https://api.cloudinary.com/v1_1/${props.cloudName}/image/upload`,data)
+      .then((res)=>{
+        setPic(res.data.url.toString())
+        setPicLoading(false)
+        console.log(res.data.url.toString())
+        toast({
+          title: "Image uploaded successfully!",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom",
+        });
+      }).catch(e=>{
+        console.log(e)
+          setPicLoading(false)
+      })
+    }else{
+      toast({
+        title:"please select an image of either jpeg or png",
+        status:"warning",
+        duration:5000,
+        isClosable:true,
+        position:"bottom"
+      })
+      setPicLoading(false)
+      return;
+    }
+  }
   return (
     <VStack spacing="5px">
         <FormControl id="first-name" isRequired>
@@ -48,7 +96,7 @@ const Signup = () => {
           </InputRightElement>
         </InputGroup>
       </FormControl>
-      <FormControl id="password" isRequired>
+      <FormControl id="cpassword" isRequired>
         <FormLabel>Confirm Password</FormLabel>
         <InputGroup size="md">
           <Input

@@ -13,6 +13,10 @@ import Sup from './Authentication/Sup'
 import Lin from './Authentication/Lin'
 
 const Home = () => {
+    const uploadPreset=process.env.REACT_APP_UPLOAD_PRESET
+    const cloudName=process.env.REACT_APP_CLOUD_NAME_API_KEY
+
+
     return (
         <Container maxW="xl" centerContent>
             <Box
@@ -40,7 +44,7 @@ const Home = () => {
                             <Lin />
                         </TabPanel>
                         <TabPanel>
-                            <Sup />
+                            <Sup cloudName={cloudName} uploadPreset={uploadPreset}/>
                         </TabPanel>
                     </TabPanels>
                 </Tabs>
