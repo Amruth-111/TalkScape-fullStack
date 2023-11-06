@@ -13,12 +13,17 @@ app.use(cors())
 
 const chats=require("./data/data")
 const dbConnect=require('./config/db')
-
+const userAuth=require('./routes/userRoutes')
+const {errorHandler,notFound}=require('./middleware/errorhandlers')
 dbConnect()
 
 app.get('/',(req,res)=>{
     res.send('started my api')
 })
+
+app.use('/api/users',userAuth)
+app.use(notFound)
+app.use(errorHandler)
 
 app.get('/api/chats',(req,res)=>{
     console.log(chats)
