@@ -6,7 +6,7 @@ const route=express.Router()
 const user=require('../controllers/userController')
 const auth=require('../middleware/auth')
 
-route.post('/',[
+route.post('/signup',[
     body('name','enter a valid name').isLength({min:3}),
     body('password','password must be atleast 5 digit').isLength({min:5}),
     body('email','enter a valid email').isEmail(),

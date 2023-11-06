@@ -2,7 +2,7 @@ const { validationResult } = require('express-validator');
 const User=require('../models/userModel')
 const jwtToken=require('../config/jwt')
 const bcrypt=require('bcrypt');
-const { use } = require('../routes/userRoutes');
+// const { use } = require('../routes/userRoutes');
 
 exports.userSignUp = async (req, res) => {
 
@@ -14,10 +14,11 @@ exports.userSignUp = async (req, res) => {
         if (!errors.isEmpty()) {
             return res.status(404).json({ success, errors: errors.array() });
         }
+       
 
-        const user=await user.findOne({email})
-        // console.log(user)
+        const user=await User.findOne({email:email})
 
+        console.log("njsjsnsj")
         //if email exists we suggest the user to log in
         if(user){
             return res.status(404).json({ success, msg:"email already exists...log in" });
@@ -25,23 +26,24 @@ exports.userSignUp = async (req, res) => {
         const salt=await bcrypt.genSalt(10)
 
         const secPassword=await bcrypt.hash(password,salt)
-
-        console.log(secPassword)
         //else 
-       user=await User.create({
+       let newuser=await User.create({
             name,
             email,
             password:secPassword,
             pic
         })
+
         
-        const createUser=await User.save()
-        
+        const createUser=await newuser.save()
+
+        console.log(createUser)
+
         const token=await jwtToken(createUser._id)
-        console.log(token)
-        console.log(createUser._id)
         success=true
-        res.status(201).json({ success, msg:"successfully registered" ,data:createUser,token});
+        console.log(createUser,token,success)
+      
+        return res.status(201).json({ success, msg:"successfully registered",token});
         // res.status(201).json({success,msg:"logged in sucessfully",authToken });
 
     } catch (e) {

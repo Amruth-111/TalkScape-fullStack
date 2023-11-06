@@ -6,7 +6,10 @@ import { VStack } from "@chakra-ui/layout";
 import { useToast } from '@chakra-ui/react'
 import { useState } from "react";
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 const Signup = (props) => {
+  const navigate=useNavigate()
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
   const [name, setName] = useState();
@@ -17,7 +20,64 @@ const Signup = (props) => {
   const [picLoading, setPicLoading] = useState(false);
   const toast=useToast()
   
-  const submitHandler = async () => {}
+  const submitHandler = async () => {
+    setPicLoading(true);
+    if(!name || !email ||!password || !confirmpassword){
+      toast({
+        title:"please select the image",
+        status:"warning",
+        duration:5000,
+        isClosable:true,
+        position:"bottom"
+      })
+      setPicLoading(false);
+      return;
+    }
+    if(password !== confirmpassword){
+      toast({
+        title:"password doesnot match",
+        status:"warning",
+        duration:5000,
+        isClosable:true,
+        position:"bottom"
+      })
+      setPicLoading(false);
+      return;
+    }
+    try{
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+        },
+      };
+      const {data}=await axios.post("http://localhost:8000/api/users/signup",{name,email,password,pic},config)
+      console.log(data.token)
+      toast({
+        title:"Registration successfull",
+        status:"success",
+        duration:5000,
+        isClosable:true,
+        position:"bottom"
+      })
+     
+      localStorage.setItem("token",data.token)
+      setPicLoading(false)
+
+    }catch(e){
+      toast({
+        title:"Error in dom",
+        description:e.response.data.message,
+        status:"warning",
+        duration:5000,
+        isClosable:true,
+        position:"bottom"
+      })
+      setPicLoading(false)
+    }
+    navigate('/')
+  }
+
+
   const postDetails=async(pics)=>{
       setPicLoading(true)
     if(pics===undefined){

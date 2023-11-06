@@ -4,15 +4,66 @@ import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input, InputGroup, InputRightElement } from "@chakra-ui/input";
 import { VStack } from "@chakra-ui/layout";
 import { useState } from "react"
-
+import { useToast } from '@chakra-ui/react'
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 const Lin = () => {
+  const navigate=useNavigate()
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [loading, setLoading] = useState(false);
-  const submitHandler = async () => { }
-  const postDetails = (pics) => { }
+  const toast=useToast()
+  const submitHandler = async () => {
+    setLoading(true);
+    if( !email ||!password ){
+      toast({
+        title:"please select the image",
+        status:"warning",
+        duration:5000,
+        isClosable:true,
+        position:"bottom"
+      })
+      setLoading(false);
+      return;
+    }
+   
+    try{
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+        },
+      };
+      const {data}=await axios.post("http://localhost:8000/api/users/login",{email,password},config)
+      console.log(data.token)
+      toast({
+        title:"Logged in successfully",
+        status:"success",
+        duration:5000,
+        isClosable:true,
+        position:"bottom"
+      })
+     
+      localStorage.setItem("token",data.token)
+      setLoading(false)
+
+    }catch(e){
+      toast({
+        title:"Error in dom",
+        description:e.response.data.message,
+        status:"warning",
+        duration:5000,
+        isClosable:true,
+        position:"bottom"
+      })
+      setLoading(false)
+    }
+    navigate('/')
+  }
+
+
+ 
 
   return (
     <VStack spacing="10px">
