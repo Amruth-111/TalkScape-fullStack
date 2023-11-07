@@ -1,4 +1,4 @@
-const { validationResult } = require('express-validator');
+
 const User = require('../models/userModel');
 const Chat = require('../models/chatModel');
 
@@ -10,6 +10,7 @@ exports.accessChats = async (req, res) => {
         if (!userId) {
             return res.status(400).json({ success, msg: "user id not present" })
         }
+        //if user id is present then find the perticular chat in chats db
         let isChat = await Chat.find({
             isGroupChat: false,
             $and: [
@@ -26,6 +27,7 @@ exports.accessChats = async (req, res) => {
         console.log(isChat)
         if (isChat.length > 0) {
             res.send(isChat[0])
+            //is the chat is not present then create a new chat between two personals
         } else {
             var chatData = {
                 chatName: "sender",
@@ -51,6 +53,8 @@ exports.accessChats = async (req, res) => {
 
 exports.fetchChats = async (req, res) => {
     try {
+
+        // fetch all the chats of the requested user 
         let chats = await Chat.find({ users: { $elemMatch: { $eq: req.user._id } } })
             .populate("users", "-password")
             .populate("groupAdmin", "-password")
@@ -80,7 +84,7 @@ exports.createGroupChat = async (req, res) => {
         if (users.length < 2) {
             return res.status(400).json({ success, msg: "select more than 1 users to create group" })
         }
-
+        //used to push even the current user to the group
         users.push(req.user)
         const groupChat = await Chat.create({
             chatName: req.body.name,
@@ -91,7 +95,7 @@ exports.createGroupChat = async (req, res) => {
         })
         const fullChat = await Chat.findOne({ _id: groupChat._id }).populate("users", "-password")
             .populate("groupAdmin", "-password")
-            success=true
+        success = true
         res.status(201).json({ success, data: fullChat })
     } catch (e) {
         res.status(400).send("backend main createGroupchat error")
@@ -106,13 +110,14 @@ exports.renameGroup = async (req, res) => {
             return res.status(400).json({ success, msg: "name not specified" })
         }
 
+        //use findByIdAndUpdate to update the group name with perticular groupid
         const renameGroupChat = await Chat.findByIdAndUpdate(
             id,
             { chatName: req.body.newName },
             { new: true })
             .populate("users", "-password")
             .populate("groupAdmin", "-password")
-            success=true
+        success = true
         res.status(201).json({ success, data: renameGroupChat })
 
     } catch (e) {
@@ -123,18 +128,18 @@ exports.renameGroup = async (req, res) => {
 exports.removeFromGroup = async (req, res) => {
     try {
         let success = false
-        const {groupId,userId}=req.body
+        const { groupId, userId } = req.body
         if (!userId || !groupId) {
             return res.status(400).json({ success, msg: " some details missing" })
         }
 
         const removeGroupUser = await Chat.findByIdAndUpdate(
             groupId,
-            { $pull:{users:userId }},
+            { $pull: { users: userId } },
             { new: true })
             .populate("users", "-password")
             .populate("groupAdmin", "-password")
-            success=true
+        success = true
         res.status(201).json({ success, data: removeGroupUser })
 
 
@@ -146,14 +151,14 @@ exports.removeFromGroup = async (req, res) => {
 exports.addToGroup = async (req, res) => {
     try {
         let success = false
-        const {groupId,userId}=req.body
+        const { groupId, userId } = req.body
         if (!userId || !groupId) {
             return res.status(400).json({ success, msg: " some details missing" })
         }
 
         const removeGroupUser = await Chat.findByIdAndUpdate(
             groupId,
-            { $push:{users:userId }},
+            { $push: { users: userId } },
             { new: true })
             .populate("users", "-password")
             .populate("groupAdmin", "-password")
