@@ -6,11 +6,11 @@ const route=express.Router()
 const user=require('../controllers/userController')
 const auth=require('../middleware/auth')
 
-route.post('/signup',[
+route.route('/').post([
     body('name','enter a valid name').isLength({min:3}),
     body('password','password must be atleast 5 digit').isLength({min:5}),
     body('email','enter a valid email').isEmail(),
-],user.userSignUp)
+],user.userSignUp).get(auth,user.getUser)
 
 
 route.post('/login',[
@@ -20,4 +20,3 @@ route.post('/login',[
 
 module.exports=route
 
-route.post('/getuser',auth,user.userLogIn)

@@ -8,12 +8,11 @@ const authentication=async(req,res,next)=>{
         if(!result){
             return res.status(400).send("token doesnt match please enter the correct token")
         }
-        const res=await User.findById(result.id)
-        req.user=res._id
+        const res=await User.findById(result.id).select("-password")
+        req.user=res
         next()
     }catch(e){
         return res.status(500).json({error:e,msg:"serverside error"})
-
     }
     
 }
