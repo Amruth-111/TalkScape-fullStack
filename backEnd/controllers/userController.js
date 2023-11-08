@@ -18,7 +18,7 @@ exports.userSignUp = async (req, res) => {
 
         const user = await User.findOne({ email: email })
 
-        console.log("njsjsnsj")
+        // console.log("njsjsnsj")
         //if email exists we suggest the user to log in
         if (user) {
             return res.status(404).json({ success, msg: "email already exists...log in" });
@@ -41,9 +41,17 @@ exports.userSignUp = async (req, res) => {
 
         const token = await jwtToken(createUser._id)
         success = true
-        console.log(createUser, token, success)
+        // console.log(createUser, token, success)
+      
+       
 
-        return res.status(201).json({ success, msg: "successfully registered", token });
+        return res.status(201).json({ success, 
+            msg: "successfully registered",
+            _id:createUser._id,
+            name:createUser.name,
+            pic:createUser.pic,
+            isAdmin:createUser.isAdmin,
+            email:createUser.email, token });
         // res.status(201).json({success,msg:"logged in sucessfully",authToken });
 
     } catch (e) {
@@ -78,16 +86,19 @@ exports.userLogIn = async (req, res) => {
 
         const token = await jwtToken(userExists._id)
         success = true
-        // res.status(201).json({
-        //     _id: user._id,
-        //     name: user.name,
-        //     email: user.email,
-        //     isAdmin: user.isAdmin,
-        //     pic: user.pic,
-        //     token: generateToken(user._id),
-        //   });
-        res.status(201).json({ success, msg: "successfully loggedin", data: userExists, token });
-        // res.status(201).json({success,msg:"logged in sucessfully",authToken });
+        
+        res.status(201).json({
+            success,
+            _id: userExists._id,
+            name: userExists.name,
+            email: userExists.email,
+            isAdmin: userExists.isAdmin,
+            pic: userExists.pic,
+            token,
+          });
+     
+
+      
 
     } catch (e) {
         return res.status(500).json({ msg: "error in the server side", error: e });
