@@ -60,7 +60,8 @@ const Signup = (props) => {
         position:"bottom"
       })
      
-      localStorage.setItem("token",data.token)
+      const res=JSON.stringify(data)
+      localStorage.setItem("token",res)
       setPicLoading(false)
 
     }catch(e){

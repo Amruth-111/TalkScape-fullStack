@@ -11,8 +11,18 @@ import {
 import React from 'react'
 import Sup from './Authentication/Sup'
 import Lin from './Authentication/Lin'
-
+import { useNavigate } from "react-router-dom";
+import {  useEffect } from "react";
 const Home = () => {
+    const navigate=useNavigate()
+
+    useEffect(()=>{
+        let userInfo=JSON.parse(localStorage.getItem("token"))
+        console.log(userInfo)
+        if(userInfo){
+            navigate('/chats')
+        }
+    },[navigate])
     const uploadPreset=process.env.REACT_APP_UPLOAD_PRESET
     const cloudName=process.env.REACT_APP_CLOUD_NAME_API_KEY
 
@@ -20,7 +30,7 @@ const Home = () => {
     return (
         <Container maxW="xl" centerContent>
             <Box
-                d="flex"
+                display="flex"
                 justifyContent="center"
                 p={3}
                 bg="white"

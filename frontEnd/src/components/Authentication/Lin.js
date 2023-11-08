@@ -44,8 +44,9 @@ const Lin = () => {
         isClosable:true,
         position:"bottom"
       })
-     
-      localStorage.setItem("token",data.token)
+     const res=JSON.stringify(data)
+      localStorage.setItem("token",res)
+      navigate('/chats')
       setLoading(false)
 
     }catch(e){
