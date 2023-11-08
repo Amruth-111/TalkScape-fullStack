@@ -118,11 +118,18 @@ exports.getUser = async (req, res) => {
                 ]
             } :
             {}
-        let user = await User.find(keyword).find({ _id: { $ne: req.user } })
+        // let user = await User.find(keyword).find({ _id: { $ne: req.user } }).select("name","email","pic")
+        let user = await User.find({
+            $and: [
+              keyword,
+              { _id: { $ne: req.user } }
+            ]
+          }).select("name email pic");
+          
         if(user.length===0){
             user="Not found"
         }
-
+        console.log(user)
         success=true
         return res.status(201).json({success,data:user})
     } catch (e) {
