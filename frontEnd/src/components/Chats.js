@@ -12,15 +12,17 @@ import SideDrawer from './miscellaneous/SideDrawer'
 
 const Chats = () => {
   const { user } = ChatState()
-  console.log(user)
+  // console.log(user)
+  const [fetchAgain, setFetchAgain] = useState(false);
+
   return (
     <>
       <div style={{ width: "100%" }}>
         {user && <SideDrawer />}
         <Box display="flex" justifyContent="space-between" w="100%" h="91.5vh" p="10px">
-          {user && <MyChats />}
+          {user && <MyChats fetchAgain={fetchAgain} />}
           {user && (
-            <ChatBox />
+            <ChatBox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />
           )}
         </Box>
       </div>

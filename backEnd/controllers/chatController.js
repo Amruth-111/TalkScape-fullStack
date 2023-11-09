@@ -65,7 +65,7 @@ exports.fetchChats = async (req, res) => {
             path: "latestMessage.sender",
             select: "name email pic"
         })
-        console.log(chats)
+        // console.log(chats)
         res.status(200).send(chats)
     } catch (e) {
         res.status(400).send("backend main fetch chat error")
@@ -105,15 +105,15 @@ exports.createGroupChat = async (req, res) => {
 exports.renameGroup = async (req, res) => {
     try {
         let success = false
-        const id = req.body.groupId
-        if (!req.body.groupId || !req.body.newName) {
+        const id = req.body.chatId
+        if (!req.body.chatId || !req.body.chatName) {
             return res.status(400).json({ success, msg: "name not specified" })
         }
 
         //use findByIdAndUpdate to update the group name with perticular groupid
         const renameGroupChat = await Chat.findByIdAndUpdate(
             id,
-            { chatName: req.body.newName },
+            { chatName: req.body.chatName },
             { new: true })
             .populate("users", "-password")
             .populate("groupAdmin", "-password")
@@ -128,13 +128,13 @@ exports.renameGroup = async (req, res) => {
 exports.removeFromGroup = async (req, res) => {
     try {
         let success = false
-        const { groupId, userId } = req.body
-        if (!userId || !groupId) {
+        const { chatId, userId } = req.body
+        if (!userId || !chatId) {
             return res.status(400).json({ success, msg: " some details missing" })
         }
 
         const removeGroupUser = await Chat.findByIdAndUpdate(
-            groupId,
+            chatId,
             { $pull: { users: userId } },
             { new: true })
             .populate("users", "-password")
@@ -151,13 +151,13 @@ exports.removeFromGroup = async (req, res) => {
 exports.addToGroup = async (req, res) => {
     try {
         let success = false
-        const { groupId, userId } = req.body
-        if (!userId || !groupId) {
+        const { chatId, userId } = req.body
+        if (!userId || !chatId) {
             return res.status(400).json({ success, msg: " some details missing" })
         }
 
         const removeGroupUser = await Chat.findByIdAndUpdate(
-            groupId,
+            chatId,
             { $push: { users: userId } },
             { new: true })
             .populate("users", "-password")
