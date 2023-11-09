@@ -7,7 +7,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { getSender } from "../config/ChatLogics";
 import ChatLoading from "./ChatLoading";
-// import GroupChatModal from "./miscellaneous/GroupChatModal";
+import GroupChatModal from "./miscellaneous/GroupChatModal";
 import { Button } from "@chakra-ui/react";
 import { ChatState } from '../context/ChatProvider'
 
@@ -54,7 +54,7 @@ const MyChats = () => {
     setLoggedUser(JSON.parse(localStorage.getItem("token")));
     fetchChats();
     // eslint-disable-next-line
-  }, []);
+  }, [ ]);
 
   // JSX structure of the component
   return (
@@ -81,7 +81,7 @@ const MyChats = () => {
       >
         My Chats
         {/* New Group Chat button (commented out) */}
-        {/* <GroupChatModal>
+        <GroupChatModal>
           <Button
             display="flex"
             fontSize={{ base: "17px", md: "10px", lg: "17px" }}
@@ -89,7 +89,7 @@ const MyChats = () => {
           >
             New Group Chat
           </Button>
-        </GroupChatModal> */}
+        </GroupChatModal>
       </Box>
 
       {/* Chats section */}

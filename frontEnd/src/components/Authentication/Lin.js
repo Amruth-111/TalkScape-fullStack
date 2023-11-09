@@ -68,7 +68,7 @@ const Lin = () => {
 
   return (
     <VStack spacing="10px">
-      <FormControl id="email" isRequired>
+      <FormControl idisplay="email" isRequired>
         <FormLabel>Email Address</FormLabel>
         <Input
           value={email}
@@ -77,7 +77,7 @@ const Lin = () => {
           onChange={(e) => setEmail(e.target.value)}
         />
       </FormControl>
-      <FormControl id="password" isRequired>
+      <FormControl idisplay="password" isRequired>
         <FormLabel>Password</FormLabel>
         <InputGroup size="md">
           <Input

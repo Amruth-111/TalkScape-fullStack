@@ -40,7 +40,7 @@ const SideDrawer = () => {
     const [searchResult, setSearchResult] = useState([]);
     const [loading, setLoading] = useState(false);
     const [loadingChat, setLoadingChat] = useState("");
-    const { user, setUser, chats, setChats, selectedChat, setSelectedChat } = ChatState();
+    const { user, chats, setChats, setSelectedChat } = ChatState();
     const toast = useToast();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const navigate = useNavigate();
@@ -221,7 +221,7 @@ const SideDrawer = () => {
                         )}
 
                         {/* Loading spinner for chat access */}
-                        {loadingChat && <Spinner ml="auto" d="flex" />}
+                        {loadingChat && <Spinner ml="auto" display="flex" />}
                     </DrawerBody>
                 </DrawerContent>
             </Drawer>
