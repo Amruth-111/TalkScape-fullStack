@@ -220,6 +220,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
       // Triggering a fetch update
       setFetchAgain(!fetchAgain);
       setLoading(false);
+      fetchMessages()
     } catch (error) {
       // Displaying an error toast if removing user fails
       toast({

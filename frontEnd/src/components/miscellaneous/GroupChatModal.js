@@ -72,7 +72,7 @@ import {
         };
         // Fetching user data based on the search query
         const { data } = await axios.get(`http://localhost:8000/api/users?search=${search}`, config);
-        console.log(data);
+        // console.log(data);
         setLoading(false);
         setSearchResult(data.data);
       } catch (error) {
