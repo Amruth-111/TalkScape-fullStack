@@ -4,7 +4,7 @@ const User=require('../models/userModel')
 const authentication=async(req,res,next)=>{
     try{
         const {authentication}=req.headers
-        console.log(authentication)
+        // console.log(authentication)
         const result= jwt.verify(authentication,process.env.JWT_KEY)
         if(!result){
             return res.status(400).send("token doesnt match please enter the correct token")

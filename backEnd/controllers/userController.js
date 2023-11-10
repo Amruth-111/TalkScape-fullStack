@@ -37,7 +37,7 @@ exports.userSignUp = async (req, res) => {
 
         const createUser = await newuser.save()
 
-        console.log(createUser)
+        // console.log(createUser)
 
         const token = await jwtToken(createUser._id)
         success = true
@@ -129,7 +129,7 @@ exports.getUser = async (req, res) => {
         if(user.length===0){
             user="Not found"
         }
-        console.log(user)
+        // console.log(user)
         success=true
         return res.status(201).json({success,data:user})
     } catch (e) {

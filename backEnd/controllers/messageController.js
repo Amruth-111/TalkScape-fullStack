@@ -18,19 +18,19 @@ exports.sendMessage = asyncHandler(async (req, res) => {
 
         let message = await Message.create(newMessage)
 
-        // console.log(message)
+        // 
         // Populate 'sender' first
         message = await message.populate("sender", "name pic")
 
         // Then populate 'chat'
         message = await message.populate("chat")
 
-        console.log(message)
+        
         message = await User.populate(message, {
             path: "chat.users",
             select: "name email pic"
         })
-        console.log(message)
+        
         await Chat.findByIdAndUpdate(req.body.chatId, {
             latestMessage: message,
         })
@@ -51,7 +51,7 @@ exports.fetchMessage = asyncHandler(async (req, res) => {
         let messages = await Message.find({ chat: chatId })
             .populate('sender', 'name email pic')
             .populate('chat')
-        console.log(messages)
+        // console.log(messages)
         res.status(201).json(messages)
 
     } catch (e) {
