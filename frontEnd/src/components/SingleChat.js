@@ -15,7 +15,7 @@ import animationData from "../animations/typing.json";
 import io from "socket.io-client";
 import UpdateGroupChatModal from "./miscellaneous/UpdateGroupChatModal";
 import { ChatState } from "../context/ChatProvider"
-const ENDPOINT = "http://localhost:8000"; 
+const ENDPOINT = "http://localhost:8000";
 // "https://talk-a-tive.herokuapp.com"; -> After deployment
 let socket
 let selectedChatCompare;
@@ -76,8 +76,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     }
   };
 
-  
-  
+
+
 
   const sendMessage = async (event) => {
     if (event.key === "Enter" && newMessage) {
@@ -129,26 +129,29 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     selectedChatCompare = selectedChat;
     // eslint-disable-next-line
   }, [selectedChat]);
- 
+
 
   useEffect(() => {
     socket.on("message recieved", (newMessageRecieved) => {
-      if ( !selectedChatCompare ||  selectedChatCompare._id !== newMessageRecieved.chat._id) {
-
-        // console.log(messages,newMessageRecieved)
+      if (
+        !selectedChatCompare || // if chat is not selected or doesn't match current chat
+        selectedChatCompare._id !== newMessageRecieved.chat._id
+      ) {
+        if (!notification.includes(newMessageRecieved)) {
+          setNotification([newMessageRecieved, ...notification]);
+          setFetchAgain(!fetchAgain);
+        }
       } else {
-
         setMessages([...messages, newMessageRecieved]);
       }
     });
   });
-  
+
 
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
-
-    // if (!socketConnected) return;
-
+    if (!socketConnected) return;
+    
     if (!typing) {
       setTyping(true);
       socket.emit("typing", selectedChat._id);
@@ -204,7 +207,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 </>
               ))}
           </Text>
-           <Box
+          <Box
             display="flex"
             flexDir="column"
             justifyContent="flex-end"
@@ -214,8 +217,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             h="100%"
             borderRadius="lg"
             overflowY="hidden"
-          > 
-             {loading ? (
+          >
+            {loading ? (
               <Spinner
                 size="xl"
                 w={20}
@@ -227,8 +230,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               <div className="messages">
                 <ScrollableChat messages={messages} />
               </div>
-            
-            )} 
+
+            )}
 
             <FormControl
               onKeyDown={sendMessage}
@@ -236,25 +239,25 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               isRequired
               mt={3}
             >
-               {istyping ? (
+              {istyping ? (
                 <div>
-                   <Lottie
+                  <Lottie
                     options={defaultOptions}
                     // height={50}
                     width={70}
                     style={{ marginBottom: 15, marginLeft: 0 }}
-                  /> 
+                  />
                 </div>
               ) : (
                 <></>
-              )} 
+              )}
               <Input
                 variant="filled"
                 bg="#E0E0E0"
                 placeholder="Enter a message.."
                 value={newMessage}
-                onChange={typingHandler} 
-              /> 
+                onChange={typingHandler}
+              />
             </FormControl>
           </Box>
         </>

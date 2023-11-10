@@ -1,7 +1,7 @@
 
 
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+import React, {  useState } from 'react'
+// import axios from 'axios'
 import { ChatState } from '../context/ChatProvider'
 import MyChats from './MyChats'
 import ChatBox from './ChatBox'
