@@ -96,9 +96,9 @@ exports.createGroupChat = async (req, res) => {
         const fullChat = await Chat.findOne({ _id: groupChat._id }).populate("users", "-password")
             .populate("groupAdmin", "-password")
         success = true
-        res.status(201).json({ success, data: fullChat })
+        res.status(201).json({ success,msg:"Group chat created successfully " ,data: fullChat })
     } catch (e) {
-        res.status(400).send("backend main createGroupchat error")
+        res.status(400).json({e:e,msg:"backend main createGroupchat error"})
     }
 }
 
@@ -118,10 +118,10 @@ exports.renameGroup = async (req, res) => {
             .populate("users", "-password")
             .populate("groupAdmin", "-password")
         success = true
-        res.status(201).json({ success, data: renameGroupChat })
+        res.status(201).json({ success,msg:"rename successfull", data: renameGroupChat })
 
     } catch (e) {
-        res.status(400).send("backend main renameGroupchat error")
+        res.status(400).send("backend main rename Groupchat error")
     }
 }
 
@@ -140,11 +140,11 @@ exports.removeFromGroup = async (req, res) => {
             .populate("users", "-password")
             .populate("groupAdmin", "-password")
         success = true
-        res.status(201).json({ success, data: removeGroupUser })
+        res.status(201).json({ success,msg:"removed user successfully" ,data: removeGroupUser })
 
 
     } catch (e) {
-        res.status(400).send("backend main removeGroupUser error")
+        res.status(400).json({e:e,msg:"backend main removeGroupUser error"})
     }
 }
 
@@ -162,7 +162,7 @@ exports.addToGroup = async (req, res) => {
             { new: true })
             .populate("users", "-password")
             .populate("groupAdmin", "-password")
-        res.status(201).json({ success, data: removeGroupUser })
+        res.status(201).json({ success,msg:"added user successfully", data: removeGroupUser })
 
     } catch (e) {
         res.status(400).send("backend main removeGroupchat error")

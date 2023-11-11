@@ -12,7 +12,7 @@ import { Button } from "@chakra-ui/react";
 import { ChatState } from '../context/ChatProvider'
 
 // Functional component for displaying user's chats
-const MyChats = ({fetchAgain}) => {
+const MyChats = ({ fetchAgain }) => {
   // State variables
   const [loggedUser, setLoggedUser] = useState();
 
@@ -54,7 +54,7 @@ const MyChats = ({fetchAgain}) => {
     setLoggedUser(JSON.parse(localStorage.getItem("token")));
     fetchChats();
     // eslint-disable-next-line
-  }, [ fetchAgain]);
+  }, [fetchAgain]);
 
   // JSX structure of the component
   return (
@@ -118,11 +118,19 @@ const MyChats = ({fetchAgain}) => {
                 key={chat._id}
               >
                 {/* Display chat information */}
-                <Text>
+                <Text  as="span" fontWeight="bold">
                   {!chat.isGroupChat
                     ? getSender(loggedUser, chat.users)
                     : chat.chatName}
                 </Text>
+                <Text>
+                  {!chat.isGroupChat
+                
+                    ? (chat.latestMessage?`${getSender(loggedUser, chat.users) }:${chat.latestMessage.content}`:`${getSender(loggedUser, chat.users)}`)
+                    :(chat.latestMessage? `${chat.chatName}:${chat.lastMessage.content}`:`${chat.chatName}`)
+                  }
+                </Text>
+              
               </Box>
             ))}
           </Stack>

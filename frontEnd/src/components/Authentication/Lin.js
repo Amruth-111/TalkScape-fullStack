@@ -6,65 +6,101 @@ import { VStack } from "@chakra-ui/layout";
 import { useState } from "react"
 import { useToast } from '@chakra-ui/react'
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
+import { ChatState } from '../../context/ChatProvider';
 const Lin = () => {
-  const navigate=useNavigate()
+  const { updateUserInfo } = ChatState();
+  // const navigate=useNavigate()
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [loading, setLoading] = useState(false);
-  const toast=useToast()
-  const submitHandler = async () => {
-    setLoading(true);
-    if( !email ||!password ){
-      toast({
-        title:"please select the image",
-        status:"warning",
-        duration:5000,
-        isClosable:true,
-        position:"bottom"
-      })
-      setLoading(false);
-      return;
-    }
-   
-    try{
+  const toast = useToast()
+
+
+  const submitHandler = async (e) => {
+
+    try {
+      e.preventDefault()
+      setLoading(true);
+
+      if (!email || !password) {
+        toast({
+          title: "Please fill in all the details",
+          status: "warning",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom",
+        });
+        setLoading(false);
+        return;
+      }
+
+
+      const obj = {
+        email: email,
+        password: password,
+      };
       const config = {
         headers: {
           "Content-type": "application/json",
         },
       };
-      const {data}=await axios.post("http://localhost:8000/api/users/login",{email,password},config)
-      console.log(data.token)
-      toast({
-        title:"Logged in successfully",
-        status:"success",
-        duration:5000,
-        isClosable:true,
-        position:"bottom"
-      })
-     const res=JSON.stringify(data)
-      localStorage.setItem("token",res)
-      navigate('/chats')
-      setLoading(false)
+      const { data } = await axios.post(
+        "http://localhost:8000/api/users/login",
+        obj,
+        config
+      );
 
-    }catch(e){
+
+      // Log the response data
+      if (!data.success) {
+        toast({
+          title: data.msg,
+          description: data.msg,
+          status: "warning",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom",
+        });
+        setLoading(false);
+        return;
+      }
+
       toast({
-        title:"Error in dom",
-        description:e.response.data.message,
-        status:"warning",
-        duration:5000,
-        isClosable:true,
-        position:"bottom"
-      })
-      setLoading(false)
+        title: "Logged in successfully",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+
+      const res = JSON.stringify(data);
+      localStorage.setItem("token", res);
+      setLoading(false);
+      // navigate('/');
+      updateUserInfo()
+
+    } catch (error) {
+      console.error("error while logging in", error);
+
+      toast({
+        title: " error",
+        description: error.response.data.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+
+      setLoading(false);
     }
-    navigate('/')
-  }
+  };
 
 
- 
+
+
 
   return (
     <VStack spacing="10px">

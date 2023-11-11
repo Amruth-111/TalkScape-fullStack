@@ -12,7 +12,7 @@ import SideDrawer from './miscellaneous/SideDrawer'
 
 const Chats = () => {
   const { user } = ChatState()
-  // console.log(user)
+
   const [fetchAgain, setFetchAgain] = useState(false);
 
   return (

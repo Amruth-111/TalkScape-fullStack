@@ -56,7 +56,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
       };
       // Fetching user data based on the search query
       const { data } = await axios.get(`http://localhost:8000/api/users?search=${search}`, config);
-      console.log(data);
+  
       setLoading(false);
       setSearchResult(data);
     } catch (error) {
@@ -95,7 +95,6 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
         config
       );
 
-      console.log(data._id);
 
       // Updating the selected chat with the new data
       setSelectedChat(data.data);
@@ -170,7 +169,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
     } catch (error) {
       // Displaying an error toast if adding user fails
       toast({
-        title: "Error Occurred!",
+        title: "error while adding",
         description: error.response.data.message,
         status: "error",
         duration: 5000,

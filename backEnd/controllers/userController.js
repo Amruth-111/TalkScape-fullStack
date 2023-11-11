@@ -12,7 +12,7 @@ exports.userSignUp = async (req, res) => {
         const errors = validationResult(req);
         //if there error exists then catch that error and send the errors back
         if (!errors.isEmpty()) {
-            return res.status(404).json({ success, errors: errors.array() });
+            return res.json({ success, errors: errors.array() });
         }
 
 
@@ -21,7 +21,7 @@ exports.userSignUp = async (req, res) => {
         // console.log("njsjsnsj")
         //if email exists we suggest the user to log in
         if (user) {
-            return res.status(404).json({ success, msg: "email already exists...log in" });
+            return res.json({ success, msg: "email already exists...log in" });
         }
         const salt = await bcrypt.genSalt(10)
 
@@ -69,7 +69,7 @@ exports.userLogIn = async (req, res) => {
         const errors = validationResult(req);
         //if there error exists then catch that error and send the errors back
         if (!errors.isEmpty()) {
-            return res.status(404).json({ success, errors: errors.array() });
+            return res.json({ success, errors: errors.array() });
         }
 
         const userExists = await User.findOne({ email })
@@ -77,22 +77,23 @@ exports.userLogIn = async (req, res) => {
 
         //if email doesnot exists we suggest the user to signup
         if (!userExists) {
-            return res.status(404).json({ success, msg: "email doesnot exists...try  signup" });
+            return res.json({ success, msg: "email doesnot exists...try  signup" });
         }
-        const ispassword = bcrypt.compare(password, userExists.password)
+        console.log(password,userExists)
+        const ispassword = await bcrypt.compare(password, userExists.password)
         if (!ispassword) {
-            return res.status(404).json({ success, msg: "Invalid credentials" });
+            return res.json({ success, msg: "Invalid credentials" });
         }
 
         const token = await jwtToken(userExists._id)
         success = true
         
-        res.status(201).json({
+        return res.status(201).json({
             success,
             _id: userExists._id,
             name: userExists.name,
             email: userExists.email,
-            isAdmin: userExists.isAdmin,
+            // isAdmin: userExists.isAdmin,
             pic: userExists.pic,
             token,
           });

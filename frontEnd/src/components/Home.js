@@ -18,7 +18,7 @@ const Home = () => {
 
     useEffect(()=>{
         let userInfo=JSON.parse(localStorage.getItem("token"))
-        console.log(userInfo)
+  
         if(userInfo){
             navigate('/chats')
         }

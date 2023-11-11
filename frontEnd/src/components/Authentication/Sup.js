@@ -6,10 +6,13 @@ import { VStack } from "@chakra-ui/layout";
 import { useToast } from '@chakra-ui/react'
 import { useState } from "react";
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+
+// import { useNavigate } from 'react-router-dom';
+import { ChatState } from '../../context/ChatProvider';
 
 const Signup = (props) => {
-  const navigate=useNavigate()
+  // const navigate=useNavigate()
+  const { updateUserInfo } = ChatState();
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
   const [name, setName] = useState();
@@ -24,7 +27,7 @@ const Signup = (props) => {
     setPicLoading(true);
     if(!name || !email ||!password || !confirmpassword){
       toast({
-        title:"please select the image",
+        title:"please enter all the details",
         status:"warning",
         duration:5000,
         isClosable:true,
@@ -44,6 +47,17 @@ const Signup = (props) => {
       setPicLoading(false);
       return;
     }
+    if(password.length < 5){
+      toast({ 
+        title:"password must be atlest 5 chars",
+        status:"warning",
+        duration:5000,
+        isClosable:true,
+        position:"bottom"
+      })
+      setPicLoading(false);
+      return;
+    }
     try{
       const config = {
         headers: {
@@ -51,23 +65,38 @@ const Signup = (props) => {
         },
       };
       const {data}=await axios.post("http://localhost:8000/api/users/",{name,email,password,pic},config)
-      console.log(data.token)
-      toast({
-        title:"Registration successfull",
-        status:"success",
-        duration:5000,
-        isClosable:true,
-        position:"bottom"
-      })
-     
-      const res=JSON.stringify(data)
-      localStorage.setItem("token",res)
-      setPicLoading(false)
 
+      if(!data.success){
+        toast({
+          title:data.msg,
+          description:data.msg,
+          status:"warning",
+          duration:5000,
+          isClosable:true,
+          position:"bottom"
+        })
+        setPicLoading(false)
+        return;
+      }
+        toast({
+          title:"Registration successfull",
+          status:"success",
+          duration:5000,
+          isClosable:true,
+          position:"bottom"
+        })
+       
+        // const res=JSON.stringify(data)
+        // localStorage.setItem("token",res)
+        updateUserInfo()
+        setPicLoading(false)
+
+       
+     
     }catch(e){
       toast({
-        title:"Error in dom",
-        description:e.response.data.message,
+        title:"cant signup",
+        description:e,
         status:"warning",
         duration:5000,
         isClosable:true,
@@ -75,7 +104,8 @@ const Signup = (props) => {
       })
       setPicLoading(false)
     }
-    navigate('/')
+    // navigate('/')
+    
   }
 
 
@@ -101,7 +131,7 @@ const Signup = (props) => {
       .then((res)=>{
         setPic(res.data.url.toString())
         setPicLoading(false)
-        console.log(res.data.url.toString())
+    
         toast({
           title: "Image uploaded successfully!",
           status: "success",
@@ -110,7 +140,7 @@ const Signup = (props) => {
           position: "bottom",
         });
       }).catch(e=>{
-        console.log(e)
+   
           setPicLoading(false)
       })
     }else{

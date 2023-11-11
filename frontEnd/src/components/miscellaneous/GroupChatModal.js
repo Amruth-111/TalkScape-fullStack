@@ -72,13 +72,13 @@ import {
         };
         // Fetching user data based on the search query
         const { data } = await axios.get(`http://localhost:8000/api/users?search=${search}`, config);
-        // console.log(data);
+    
         setLoading(false);
         setSearchResult(data.data);
       } catch (error) {
         // Displaying an error toast if search fails
         toast({
-          title: "Error Occurred!",
+          title: "error fetching result",
           description: "Failed to Load the Search Results",
           status: "error",
           duration: 5000,

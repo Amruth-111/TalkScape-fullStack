@@ -174,12 +174,16 @@ const SideDrawer = () => {
                     </MenuButton>
                     <MenuList pl={2}>
                         {!notification.length && "No New Messages"}
+                       { console.log(notification)}
                         {notification.map((notif) => (
+                            
                             <MenuItem
                                 key={notif._id}
                                 onClick={() => {
                                     setSelectedChat(notif.chat);
-                                    setNotification(notification.filter((n) => n !== notif));
+                                    
+                                    setNotification(notification.filter((n) => n.sender._id !== notif.sender._id));
+                                    console.log(notification)
                                 }}
                             >
                                 {notif.chat.isGroupChat
