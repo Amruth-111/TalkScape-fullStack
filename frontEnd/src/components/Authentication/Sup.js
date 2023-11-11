@@ -86,8 +86,8 @@ const Signup = (props) => {
           position:"bottom"
         })
        
-        // const res=JSON.stringify(data)
-        // localStorage.setItem("token",res)
+        const res=JSON.stringify(data)
+        localStorage.setItem("token",res)
         updateUserInfo()
         setPicLoading(false)
 
@@ -104,7 +104,7 @@ const Signup = (props) => {
       })
       setPicLoading(false)
     }
-    // navigate('/')
+    navigate('/')
     
   }
 
