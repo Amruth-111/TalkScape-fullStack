@@ -15,8 +15,8 @@ import animationData from "../animations/typing.json";
 import io from "socket.io-client";
 import UpdateGroupChatModal from "./miscellaneous/UpdateGroupChatModal";
 import { ChatState } from "../context/ChatProvider"
-const ENDPOINT = "http://localhost:8000";
-// "https://talk-a-tive.herokuapp.com"; -> After deployment
+const ENDPOINT = "https://talk-scape-m6kt.onrender.com/";
+
 let socket
 let selectedChatCompare;
 
@@ -56,7 +56,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       setLoading(true);
 
       const { data } = await axios.get(
-        `http://localhost:8000/api/messages/${selectedChat._id}`,
+        `https://talk-scape-m6kt.onrender.com/api/messages/${selectedChat._id}`,
         config
       );
       setMessages(data);
@@ -91,7 +91,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         };
         setNewMessage("");
         const { data } = await axios.post(
-          "http://localhost:8000/api/messages",
+          "https://talk-scape-m6kt.onrender.com//api/messages",
           {
             content: newMessage,
             chatId: selectedChat,

@@ -55,7 +55,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
         },
       };
       // Fetching user data based on the search query
-      const { data } = await axios.get(`http://localhost:8000/api/users?search=${search}`, config);
+      const { data } = await axios.get(`https://talk-scape-m6kt.onrender.com/api/users?search=${search}`, config);
   
       setLoading(false);
       setSearchResult(data);
@@ -87,7 +87,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
       };
       // Making a PUT request to update the group chat name
       const { data } = await axios.put(
-        `http://localhost:8000/api/chats/rename`,
+        `https://talk-scape-m6kt.onrender.com/api/chats/rename`,
         {
           chatId: selectedChat._id,
           chatName: groupChatName,
@@ -153,7 +153,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
       };
       // Making a PUT request to add a user to the group chat
       const { data } = await axios.put(
-        `http://localhost:8000/api/chats/groupadd`,
+        `https://talk-scape-m6kt.onrender.com/api/chats/groupadd`,
         {
           chatId: selectedChat._id,
           userId: user1._id,
@@ -206,7 +206,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
       };
       // Making a PUT request to remove a user from the group chat
       const { data } = await axios.put(
-        `http://localhost:8000/api/chats/groupremove`,
+        `https://talk-scape-m6kt.onrender.com/api/chats/groupremove`,
         {
           chatId: selectedChat._id,
           userId: user1._id,

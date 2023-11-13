@@ -66,7 +66,7 @@ const Signup = (props) => {
           "Content-type": "application/json",
         },
       };
-      const {data}=await axios.post("http://localhost:8000/api/users/",{name,email,password,pic},config)
+      const {data}=await axios.post("https://talk-scape-m6kt.onrender.com/api/users/",{name,email,password,pic},config)
 
       if(!data.success){
         toast({

@@ -34,7 +34,7 @@ const MyChats = ({ fetchAgain }) => {
       };
 
       // Make API request to get user's chats
-      const { data } = await axios.get("http://localhost:8000/api/chats/", config);
+      const { data } = await axios.get("https://talk-scape-m6kt.onrender.com/api/chats/", config);
       setChats(data);
     } catch (error) {
       // Show error toast if fetching chats fails

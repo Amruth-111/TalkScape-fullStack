@@ -71,7 +71,7 @@ import {
           },
         };
         // Fetching user data based on the search query
-        const { data } = await axios.get(`http://localhost:8000/api/users?search=${search}`, config);
+        const { data } = await axios.get(`https://talk-scape-m6kt.onrender.com/api/users?search=${search}`, config);
     
         setLoading(false);
         setSearchResult(data.data);
@@ -116,7 +116,7 @@ import {
         };
         // Making a POST request to create a new group chat
         const { data } = await axios.post(
-          `http://localhost:8000/api/chats/group`,
+          `https://talk-scape-m6kt.onrender.com/api/chats/group`,
           {
             name: groupChatName,
             users: JSON.stringify(selectedUsers.map((u) => u._id)),

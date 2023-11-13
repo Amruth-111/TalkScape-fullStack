@@ -81,7 +81,7 @@ const SideDrawer = () => {
             };
 
             // Make API request to search users
-            const { data } = await axios.get(`http://localhost:8000/api/users?search=${search}`, config);
+            const { data } = await axios.get(`https://talk-scape-m6kt.onrender.com/api/users?search=${search}`, config);
             setLoading(false);
             setSearchResult(data.data);
         } catch (error) {
@@ -111,7 +111,7 @@ const SideDrawer = () => {
             };
 
             // Make API request to create a new chat
-            const { data } = await axios.post(`http://localhost:8000/api/chats/`, { userId }, config);
+            const { data } = await axios.post(`https://talk-scape-m6kt.onrender.com/api/chats/`, { userId }, config);
 
             // Update chats state if the chat is not already present
             if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
