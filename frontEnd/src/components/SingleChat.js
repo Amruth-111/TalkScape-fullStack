@@ -91,7 +91,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         };
         setNewMessage("");
         const { data } = await axios.post(
-          "https://talk-scape-m6kt.onrender.com//api/messages",
+          "https://talk-scape-m6kt.onrender.com/api/messages",
           {
             content: newMessage,
             chatId: selectedChat,
