@@ -10,7 +10,7 @@
 
 # production
 /frontend/build
-
+node_modules
 # misc
 .DS_Store
 /frontend/.env.local

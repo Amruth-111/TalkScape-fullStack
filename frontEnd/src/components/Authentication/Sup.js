@@ -5,13 +5,15 @@ import { Input, InputGroup, InputRightElement } from "@chakra-ui/input";
 import { VStack } from "@chakra-ui/layout";
 import { useToast } from '@chakra-ui/react'
 import { useState } from "react";
+
 import axios from 'axios';
 
 // import { useNavigate } from 'react-router-dom';
 import { ChatState } from '../../context/ChatProvider';
+import { useNavigate } from 'react-router-dom';
 
 const Signup = (props) => {
-  // const navigate=useNavigate()
+  const navigate=useNavigate()
   const { updateUserInfo } = ChatState();
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);

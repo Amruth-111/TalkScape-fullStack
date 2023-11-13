@@ -18,7 +18,7 @@ exports.userSignUp = async (req, res) => {
 
         const user = await User.findOne({ email: email })
 
-        // console.log("njsjsnsj")
+
         //if email exists we suggest the user to log in
         if (user) {
             return res.json({ success, msg: "email already exists...log in" });
@@ -37,21 +37,22 @@ exports.userSignUp = async (req, res) => {
 
         const createUser = await newuser.save()
 
-        // console.log(createUser)
+
 
         const token = await jwtToken(createUser._id)
         success = true
-        // console.log(createUser, token, success)
-      
-       
 
-        return res.status(201).json({ success, 
+
+
+        return res.status(201).json({
+            success,
             msg: "successfully registered",
-            _id:createUser._id,
-            name:createUser.name,
-            pic:createUser.pic,
-            isAdmin:createUser.isAdmin,
-            email:createUser.email, token });
+            _id: createUser._id,
+            name: createUser.name,
+            pic: createUser.pic,
+            isAdmin: createUser.isAdmin,
+            email: createUser.email, token
+        });
         // res.status(201).json({success,msg:"logged in sucessfully",authToken });
 
     } catch (e) {
@@ -73,13 +74,13 @@ exports.userLogIn = async (req, res) => {
         }
 
         const userExists = await User.findOne({ email })
-        // console.log(user)
+    
 
         //if email doesnot exists we suggest the user to signup
         if (!userExists) {
             return res.json({ success, msg: "email doesnot exists...try  signup" });
         }
-        console.log(password,userExists)
+        
         const ispassword = await bcrypt.compare(password, userExists.password)
         if (!ispassword) {
             return res.json({ success, msg: "Invalid credentials" });
@@ -87,7 +88,7 @@ exports.userLogIn = async (req, res) => {
 
         const token = await jwtToken(userExists._id)
         success = true
-        
+
         return res.status(201).json({
             success,
             _id: userExists._id,
@@ -96,10 +97,10 @@ exports.userLogIn = async (req, res) => {
             // isAdmin: userExists.isAdmin,
             pic: userExists.pic,
             token,
-          });
-     
+        });
 
-      
+
+
 
     } catch (e) {
         return res.status(500).json({ msg: "error in the server side", error: e });
@@ -110,7 +111,7 @@ exports.userLogIn = async (req, res) => {
 
 exports.getUser = async (req, res) => {
     try {
-        let success=false
+        let success = false
         const keyword = req.query.search
             ? {
                 $or: [
@@ -122,17 +123,16 @@ exports.getUser = async (req, res) => {
         // let user = await User.find(keyword).find({ _id: { $ne: req.user } }).select("name","email","pic")
         let user = await User.find({
             $and: [
-              keyword,
-              { _id: { $ne: req.user } }
+                keyword,
+                { _id: { $ne: req.user } }
             ]
-          }).select("name email pic");
-          
-        if(user.length===0){
-            user="Not found"
+        }).select("name email pic");
+
+        if (user.length === 0) {
+            user = "Not found"
         }
-        // console.log(user)
-        success=true
-        return res.status(201).json({success,data:user})
+        success = true
+        return res.json({ success, data: user })
     } catch (e) {
         res.json({ e, msg: "error" })
     }

@@ -126,8 +126,8 @@ const MyChats = ({ fetchAgain }) => {
                 <Text>
                   {!chat.isGroupChat
                 
-                    ? (chat.latestMessage?`${getSender(loggedUser, chat.users) }:${chat.latestMessage.content}`:`${getSender(loggedUser, chat.users)}`)
-                    :(chat.latestMessage? `${chat.chatName}:${chat.lastMessage.content}`:`${chat.chatName}`)
+                    ? (chat.latestMessage?`${getSender(loggedUser, chat.users) }:${chat.latestMessage.content}`:"")
+                    :(chat.latestMessage? `${chat.chatName}:${chat.lastMessage.content}`:"")
                   }
                 </Text>
               

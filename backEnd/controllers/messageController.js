@@ -51,7 +51,7 @@ exports.fetchMessage = asyncHandler(async (req, res) => {
         let messages = await Message.find({ chat: chatId })
             .populate('sender', 'name email pic')
             .populate('chat')
-        // console.log(messages)
+    
         res.status(201).json(messages)
 
     } catch (e) {

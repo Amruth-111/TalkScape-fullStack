@@ -24,7 +24,7 @@ exports.accessChats = async (req, res) => {
             path: "latestMessage.sender",
             select: "name email pic"
         })
-        // console.log(isChat)
+      
         if (isChat.length > 0) {
             res.send(isChat[0])
             //is the chat is not present then create a new chat between two personals
@@ -60,12 +60,12 @@ exports.fetchChats = async (req, res) => {
             .populate("groupAdmin", "-password")
             .populate("latestMessage")
             .sort({ updatedAt: -1 });
-        // console.log(chats)
+   
         chats = await User.populate(chats, {
             path: "latestMessage.sender",
             select: "name email pic"
         })
-        // console.log(chats)
+       
         res.status(200).send(chats)
     } catch (e) {
         res.status(400).send("backend main fetch chat error")
