@@ -60,7 +60,7 @@ const server = app.listen(port)
 const io = require('socket.io')(server, {
     pingTimeout: 80000,
     cors: {
-        origin: 'https://talk-scape.onrender.com/'
+        origin: 'https://talk-scape.onrender.com'
     },
 
 })
