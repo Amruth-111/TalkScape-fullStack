@@ -8,6 +8,9 @@
     "start": "nodemon app.js",
     "build":"npm i"
   },
+  "engines": {
+    "node": ">=14"
+  },
   "author": "Amruth",
   "license": "ISC",
   "dependencies": {
